@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Pool, neonConfig } from "@neondatabase/serverless";
+import { neonConfig } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import ws from "ws";
 
@@ -20,9 +20,10 @@ function createPrismaClient(): PrismaClient {
   if (/neon\.tech/i.test(url)) {
     // ws erfüllt die WebSocket-Schnittstelle, die Typen weichen aber ab.
     neonConfig.webSocketConstructor = ws as unknown as typeof WebSocket;
-    const pool = new Pool({ connectionString: url });
-    const adapter = new PrismaNeon(pool);
-    // adapter-Option gehört zum driverAdapters-Preview; per any typsicher halten.
+    // PrismaNeon erwartet eine PoolConfig ({ connectionString }), den Pool legt
+    // der Adapter selbst an.
+    const adapter = new PrismaNeon({ connectionString: url });
+    // adapter-Option gehört zum driverAdapters-Preview; per Cast typsicher halten.
     const options = { adapter, log: ["error"] } as unknown as ConstructorParameters<
       typeof PrismaClient
     >[0];
