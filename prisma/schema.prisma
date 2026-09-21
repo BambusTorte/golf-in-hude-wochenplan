@@ -3,6 +3,9 @@
 
 generator client {
   provider = "prisma-client-js"
+  // "native" für lokale Entwicklung, rhel-Targets für die Netlify/AWS-Lambda-
+  // Laufzeit (verhindert "engine not found"-Abstürze / 502 in Produktion).
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
