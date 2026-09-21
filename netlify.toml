@@ -1,7 +1,9 @@
 # Netlify-Konfiguration für die Golf-in-Hude-Wochenplan-Plattform
 
 [build]
-  command = "npm run build"
+  # Migrationen laufen automatisch beim Deploy (nutzt DATABASE_URL aus Netlify),
+  # danach der normale Build (prisma generate + next build).
+  command = "npx prisma migrate deploy && npm run build"
   publish = ".next"
 
 [build.environment]

@@ -66,11 +66,12 @@ Danach **Deploy** starten.
 
 ## Schritt 5 – Datenbank migrieren
 
-Einmalig die Tabellen in der Neon-DB anlegen (lokal ausführen, mit dem Neon-String):
+**Automatisch:** Die Tabellen werden bei jedem Netlify-Deploy angelegt/aktualisiert
+(`prisma migrate deploy` ist Teil des Build-Commands). Es ist **kein** manueller
+Schritt nötig – vorausgesetzt `DATABASE_URL` ist in Netlify gesetzt (Schritt 4).
 
-```bash
-DATABASE_URL="<NEON-CONNECTION-STRING>" npx prisma migrate deploy
-```
+> Falls du es doch einmal manuell (z. B. vom PC) machen willst:
+> `DATABASE_URL="<NEON-STRING>" npx prisma migrate deploy`
 
 ---
 
