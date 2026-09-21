@@ -1,0 +1,228 @@
+// Golf in Hude – Wochenplan-Plattform · Datenmodell
+// PostgreSQL + Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- Authentifizierung -------------------------------------------------------
+
+model Admin {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  lastLoginAt  DateTime?
+
+  sessions      Session[]
+  publishEvents PublishEvent[]
+  changeLogs    ChangeLog[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userAgent String?
+  ip        String?
+
+  @@index([expiresAt])
+  @@index([adminId])
+}
+
+// Login-Versuche für Rate-Limiting (serverless-tauglich, kein RAM-State).
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  key       String // z. B. "email:foo" oder "ip:1.2.3.4"
+  success   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+}
+
+// Sperrt die Ersteinrichtung nach dem ersten Admin dauerhaft.
+model SetupState {
+  id          Int       @id @default(1)
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+}
+
+// --- Wochenpläne -------------------------------------------------------------
+
+enum PlanStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model WeeklyPlan {
+  id          String     @id @default(cuid())
+  year        Int
+  isoWeek     Int
+  weekStart   DateTime // Montag 00:00 Europe/Berlin (als UTC gespeichert)
+  weekEnd     DateTime // Sonntag 23:59
+  status      PlanStatus @default(DRAFT)
+  title       String // z. B. "Wochenplan 28.09.2026 - 04.10.2026"
+  subtitle    String? // z. B. "18-Loch Nordseeplatz + 9 Loch Weserplatz"
+  warnings    Json       @default("[]")
+  sourceInfo  Json       @default("{}")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  publishedAt DateTime?
+
+  events        PlanEvent[]
+  pdfFiles      PdfFile[]
+  changeLogs    ChangeLog[]
+  publishEvents PublishEvent[]
+  importRuns    ImportRun[]
+
+  @@unique([year, isoWeek])
+  @@index([status])
+  @@index([year, isoWeek, status])
+}
+
+enum PlayType {
+  CLUB_VW // Clubwettspiel, vorgabewirksam (Handicap-relevant)
+  CLUB_NVW // Clubwettspiel, nicht vorgabewirksam
+  VERBAND // Verbandswettspiel
+  SPONSOR // Sponsorenveranstaltung
+}
+
+enum EventSource {
+  PCCADDIE_HTML
+  PCCADDIE_ICS
+  MANUAL
+}
+
+enum EventOrigin {
+  IMPORTED
+  EDITED
+}
+
+model PlanEvent {
+  id         String     @id @default(cuid())
+  planId     String
+  plan       WeeklyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  externalId String? // stabile PC-CADDIE-ID zur Duplikaterkennung
+  date       DateTime // konkretes Datum (Tag) des Termins
+  weekday    Int // 0 = Montag … 6 = Sonntag
+  startTime  String? // "HH:mm" (echte Startzeit aus der Detailzeile)
+  endTime    String?
+  title      String
+  course     String? // "Nordseeplatz" / "Weserplatz"
+
+  holes           Int?
+  tee             String? // "1", "Kanonenstart", …
+  format          String? // "Einzel - Stableford", …
+  handicapRelevant Boolean?
+
+  // Teilnehmerangaben klar getrennt:
+  maxParticipants      Int? // "Teilnehmer maximal" (Quelle)
+  freeOnline           Int? // "Freie Plätze online" (Quelle)
+  participantsEstimate String? // "TN" für Druck, Schätzung des Betreibers ("ca. 30")
+
+  playType PlayType?
+
+  links  Json        @default("{}") // { announcement, entrylist, draw, result }
+  source EventSource @default(MANUAL)
+  origin EventOrigin @default(IMPORTED)
+  rawRef Json        @default("{}") // Rohdatenreferenz für Nachvollziehbarkeit
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([planId, externalId])
+  @@index([planId, date])
+}
+
+// --- Import & Protokolle -----------------------------------------------------
+
+enum ImportStatus {
+  RUNNING
+  SUCCESS
+  PARTIAL
+  FAILED
+}
+
+model ImportRun {
+  id             String       @id @default(cuid())
+  provider       String
+  year           Int
+  week           Int
+  status         ImportStatus @default(RUNNING)
+  eventsFound    Int          @default(0)
+  eventsImported Int          @default(0)
+  message        String?
+  warnings       Json         @default("[]")
+  startedAt      DateTime     @default(now())
+  finishedAt     DateTime?
+
+  planId String?
+  plan   WeeklyPlan? @relation(fields: [planId], references: [id], onDelete: SetNull)
+
+  @@index([startedAt])
+  @@index([status])
+}
+
+model PdfFile {
+  id          String     @id @default(cuid())
+  planId      String
+  plan        WeeklyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  storageKey  String     @unique
+  byteSize    Int
+  contentHash String
+  createdAt   DateTime   @default(now())
+
+  @@index([planId])
+}
+
+model ChangeLog {
+  id      String     @id @default(cuid())
+  planId  String?
+  plan    WeeklyPlan? @relation(fields: [planId], references: [id], onDelete: Cascade)
+  adminId String?
+  admin   Admin?     @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  action  String
+  before  Json?
+  after   Json?
+  at      DateTime   @default(now())
+
+  @@index([planId, at])
+}
+
+enum PublishAction {
+  PUBLISH
+  UNPUBLISH
+}
+
+model PublishEvent {
+  id      String        @id @default(cuid())
+  planId  String
+  plan    WeeklyPlan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  adminId String?
+  admin   Admin?        @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  type    PublishAction
+  at      DateTime      @default(now())
+
+  @@index([planId, at])
+}
+
+model ErrorLog {
+  id      String   @id @default(cuid())
+  scope   String
+  message String
+  meta    Json     @default("{}")
+  at      DateTime @default(now())
+
+  @@index([at])
+}

@@ -1,0 +1,19 @@
+# Netlify-Konfiguration für die Golf-in-Hude-Wochenplan-Plattform
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Prisma-Client wird im Build generiert (siehe package.json build-Skript).
+  NODE_VERSION = "22"
+
+# Offizielles Next.js-Runtime-Plugin (Route Handlers, Server Actions, SSR).
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Geplante Funktion: tägliche Generierung der Entwürfe (05:00 UTC).
+[functions."scheduled-generate"]
+  schedule = "0 5 * * *"
+
+# Wochenplan-PDFs werden in Netlify Blobs abgelegt (STORAGE_DRIVER=netlify-blobs).

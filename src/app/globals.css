@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-brand-700 text-ink antialiased;
+  min-height: 100dvh;
+}
+
+/* Weicher, ruhiger Waldgrün-Verlauf wie in der Designreferenz. */
+.bg-brand-gradient {
+  background:
+    radial-gradient(
+      1200px 600px at 50% -10%,
+      rgba(87, 193, 132, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #073d2f 0%, #094d3b 45%, #053024 100%);
+  background-attachment: fixed;
+}
+
+@layer components {
+  .card {
+    @apply rounded-card bg-white shadow-card;
+  }
+
+  .label-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft;
+  }
+
+  .badge-tile {
+    @apply inline-flex items-center justify-center rounded-badge bg-brand-700 px-3 py-1.5 text-sm font-bold text-white;
+  }
+
+  .focus-ring {
+    @apply outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-accent-500;
+  }
+}
+
+/* Druck: nur den Wochenplan zeigen, Navigation ausblenden. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+}

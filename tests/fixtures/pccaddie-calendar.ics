@@ -1,0 +1,219 @@
+BEGIN:VCALENDAR
+PRODID:pccaddie.net
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:01a0c4b1-86d5-71f4-b50b-9e748013da9a
+BEGIN:VEVENT
+UID:01a0c4b1-86d1-72e7-8501-72bba7a3f1f0
+DTSTAMP:20260921T155923Z
+SUMMARY:Damengolf Saisonabschied
+DESCRIPTION:Damengolf Saisonabschied\n\nEinzel - Stableford - 18 Löcher - 
+ Tee 1\, 11:00 Uhr - Saisonabschied\nGolf in Hude e. V.\nLehmweg 1\n27798 H
+ ude\n\nTel: 04408 929090\n\n
+DTSTART:20260922T090000Z
+DTEND:20260922T150000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d1-72e7-8501-72bba8356c30
+DTSTAMP:20260921T155923Z
+SUMMARY:Herrengolf !Johann gibt einen aus!
+DESCRIPTION:Herrengolf !Johann gibt einen aus!\n\nEinzel - Stableford - 18 
+ Löcher - Tee 1\, 14:00 Uhr - 2\,- Euro Birdiekasse nur an Par 3!\nGolf in
+  Hude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20260923T120000Z
+DTEND:20260923T180000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d2-73c7-b94e-6d22633bd0c7
+DTSTAMP:20260921T155923Z
+SUMMARY:AfterWork sponsored by DEFRA TEST !Johann gibt einen aus!
+DESCRIPTION:AfterWork sponsored by DEFRA TEST !Johann gibt einen aus!\n\nEi
+ nzel - Stableford - 9 Löcher - Tee 1\, 16:00 Uhr - 2\,- Birdiekasse an Pa
+ r 3 Löchern\nGolf in Hude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 9290
+ 90\n\n
+DTSTART:20260923T140000Z
+DTEND:20260923T215959Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d2-73c7-b94e-6d2263d6be3c
+DTSTAMP:20260921T155923Z
+SUMMARY:Happy Oldies -Jahresabschluß- Kanonenstart - Freies Spiel
+DESCRIPTION:Happy Oldies -Jahresabschluß- Kanonenstart - Freies Spiel\n\nE
+ inzel - Stableford - 9 Löcher - Tee 1\, 10:00 Uhr - Kanonenstart\nGolf in
+  Hude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20260924T080000Z
+DTEND:20260924T140000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d2-73c7-b94e-6d22646cdcdd
+DTSTAMP:20260921T155923Z
+SUMMARY:Greenkeepers Rache "Höchstschlagzahl pro Loch 15"
+DESCRIPTION:Greenkeepers Rache "Höchstschlagzahl pro Loch 15"\n\nHöchstsc
+ hlagzahl pro Loch 15" 2er Scramble - Kanonenstart\, 10:00 Uhr - inkl. Brat
+ wurst und Softdrinks\, NUR BARZAHLUNG\nGolf in Hude e. V.\nLehmweg 1\n2779
+ 8 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20260926T080000Z
+DTEND:20260926T140000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d2-73c7-b94e-6d22656ace30
+DTSTAMP:20260921T155923Z
+SUMMARY:Herrengolf
+DESCRIPTION:Herrengolf\n\nEinzel - Stableford - 18 Löcher - Tee 1\, 14:00 
+ Uhr - 2\,- Euro Birdiekasse nur an Par 3!\nGolf in Hude e. V.\nLehmweg 1\n
+ 27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20260930T120000Z
+DTEND:20260930T180000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d2-73c7-b94e-6d2266114e50
+DTSTAMP:20260921T155923Z
+SUMMARY:AfterWork sponsored by DEFRA TEST
+DESCRIPTION:AfterWork sponsored by DEFRA TEST\n\nEinzel - Stableford - 9 L
+ öcher - Tee 1\, 16:00 Uhr - 2\,- Birdiekasse an Par 3 Löchern\nGolf in H
+ ude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20260930T140000Z
+DTEND:20260930T215959Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d3-715b-833e-e293d9afd723
+DTSTAMP:20260921T155923Z
+SUMMARY:Hexenkessel & MobileStore Cup FINALE
+DESCRIPTION:Hexenkessel & MobileStore Cup FINALE\n\nEinzel - Stableford - 9
+  Löcher - Tee 1\, 11:00 Uhr\nGolf in Hude e. V.\nLehmweg 1\n27798 Hude\n\
+ nTel: 04408 929090\n\n
+DTSTART:20261003T090000Z
+DTEND:20261003T150000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d3-715b-833e-e293d9fc364f
+DTSTAMP:20260921T155923Z
+SUMMARY:Monatscup Oktober
+DESCRIPTION:Monatscup Oktober\n\nEinzel - Stableford - 18 Löcher - Tee 1\,
+  10:00 Uhr\nGolf in Hude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090
+ \n\n
+DTSTART:20261004T080000Z
+DTEND:20261004T140000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d3-715b-833e-e293dad0add0
+DTSTAMP:20260921T155923Z
+SUMMARY:Herrengolf
+DESCRIPTION:Herrengolf\n\nEinzel - Stableford - 18 Löcher - Tee 1\, 14:00 
+ Uhr - 2\,- Euro Birdiekasse nur an Par 3!\nGolf in Hude e. V.\nLehmweg 1\n
+ 27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20261007T120000Z
+DTEND:20261007T180000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d3-715b-833e-e293daed1750
+DTSTAMP:20260921T155923Z
+SUMMARY:AfterWork sponsored by DEFRA TEST
+DESCRIPTION:AfterWork sponsored by DEFRA TEST\n\nEinzel - Stableford - 9 L
+ öcher - Tee 1\, 16:00 Uhr - 2\,- Birdiekasse an Par 3 Löchern\nGolf in H
+ ude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20261007T140000Z
+DTEND:20261007T215959Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d3-715b-833e-e293dbdc712f
+DTSTAMP:20260921T155923Z
+SUMMARY:Race to Hude
+DESCRIPTION:Race to Hude\n\nEinzel - Stableford - 18 Löcher - Tee 1\, 10:0
+ 0 Uhr - Startreihenfolge: Nach Platzierung der Race to Hude Tabelle Brutto
+  aufsteigend\nGolf in Hude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 9290
+ 90\n\n
+DTSTART:20261011T080000Z
+DTEND:20261011T140000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d3-715b-833e-e293dc165937
+DTSTAMP:20260921T155923Z
+SUMMARY:Herrengolf
+DESCRIPTION:Herrengolf\n\nEinzel - Stableford - 18 Löcher - Tee 1\, 14:00 
+ Uhr - 2\,- Euro Birdiekasse nur an Par 3!\nGolf in Hude e. V.\nLehmweg 1\n
+ 27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20261014T120000Z
+DTEND:20261014T180000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d4-7172-af85-acf3f0bc74d1
+DTSTAMP:20260921T155923Z
+SUMMARY:AfterWork sponsored by DEFRA TEST
+DESCRIPTION:AfterWork sponsored by DEFRA TEST\n\nEinzel - Stableford - 9 L
+ öcher - Tee 1\, 16:00 Uhr - 2\,- Birdiekasse an Par 3 Löchern\nGolf in H
+ ude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20261014T140000Z
+DTEND:20261014T215959Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d4-7172-af85-acf3f16f22a7
+DTSTAMP:20260921T155923Z
+SUMMARY:Neumitgliederturnier
+DESCRIPTION:Neumitgliederturnier\n\nKlassischer Vierer - Stableford - 9 Lö
+ cher - Tee 1\, 11:00 Uhr\nGolf in Hude e. V.\nLehmweg 1\n27798 Hude\n\nTel
+ : 04408 929090\n\n
+DTSTART:20261017T090000Z
+DTEND:20261017T150000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d4-7172-af85-acf3f2432be4
+DTSTAMP:20260921T155923Z
+SUMMARY:Herrengolf" Wer schlägt Johann (Brutto)!!!
+DESCRIPTION:Herrengolf" Wer schlägt Johann (Brutto)!!!\n\nEinzel - Stablef
+ ord - 18 Löcher - Tee 1\, 15:00 Uhr - 2\,- Euro Birdiekasse nur an Par 3!
+ \nGolf in Hude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20261021T130000Z
+DTEND:20261021T190000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d4-7172-af85-acf3f2aaad82
+DTSTAMP:20260921T155923Z
+SUMMARY:AfterWork sponsored by DEFRA TEST
+DESCRIPTION:AfterWork sponsored by DEFRA TEST\n\nEinzel - Stableford - 9 L
+ öcher - Tee 1\, 17:00 Uhr - 2\,- Birdiekasse an Par 3 Löchern\nGolf in H
+ ude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20261021T150000Z
+DTEND:20261021T215959Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d4-7172-af85-acf3f3a4b62c
+DTSTAMP:20260921T155923Z
+SUMMARY:Herrengolf
+DESCRIPTION:Herrengolf\n\nEinzel - Stableford - 18 Löcher - Tee 1\, 15:00 
+ Uhr - 2\,- Euro Birdiekasse nur an Par 3!\nGolf in Hude e. V.\nLehmweg 1\n
+ 27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20261028T140000Z
+DTEND:20261028T200000Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+BEGIN:VEVENT
+UID:01a0c4b1-86d4-7172-af85-acf3f44215e4
+DTSTAMP:20260921T155923Z
+SUMMARY:AfterWork sponsored by DEFRA TEST
+DESCRIPTION:AfterWork sponsored by DEFRA TEST\n\nEinzel - Stableford - 9 L
+ öcher - Tee 1\, 17:00 Uhr - 2\,- Birdiekasse an Par 3 Löchern\nGolf in H
+ ude e. V.\nLehmweg 1\n27798 Hude\n\nTel: 04408 929090\n\n
+DTSTART:20261028T160000Z
+DTEND:20261028T225959Z
+LOCATION:Golf in Hude e. V.\, Lehmweg 1\, 27798 Hude
+END:VEVENT
+END:VCALENDAR
