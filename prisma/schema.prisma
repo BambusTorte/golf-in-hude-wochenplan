@@ -2,10 +2,12 @@
 // PostgreSQL + Prisma
 
 generator client {
-  provider = "prisma-client-js"
-  // "native" für lokale Entwicklung, rhel-Targets für die Netlify/AWS-Lambda-
-  // Laufzeit (verhindert "engine not found"-Abstürze / 502 in Produktion).
-  binaryTargets = ["native", "rhel-openssl-3.0.x", "rhel-openssl-1.0.x"]
+  provider        = "prisma-client-js"
+  // driverAdapters: erlaubt den Neon-Serverless-Treiber in Produktion
+  // (reines JS, keine native Query-Engine -> keine 502 auf Netlify/Lambda).
+  previewFeatures = ["driverAdapters"]
+  // "native" für lokale Entwicklung (localhost-Postgres über native Engine).
+  binaryTargets   = ["native"]
 }
 
 datasource db {

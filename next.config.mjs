@@ -6,7 +6,9 @@ const nextConfig = {
     "@node-rs/argon2",
     "node-ical",
     "@prisma/client",
-    ".prisma/client",
+    "@prisma/adapter-neon",
+    "@neondatabase/serverless",
+    "ws",
   ],
   // Prisma-Query-Engine (Binärdatei) zwingend ins Serverless-Function-Bundle
   // aufnehmen – sonst 502 zur Laufzeit auf Netlify/Lambda.

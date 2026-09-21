@@ -23,8 +23,10 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
     "@netlify/blobs": "^8.1.0",
     "@node-rs/argon2": "^2.0.2",
+    "@prisma/adapter-neon": "^6.19.3",
     "@prisma/client": "^6.2.1",
     "@react-pdf/renderer": "^4.1.6",
     "cheerio": "^1.0.0",
@@ -34,6 +36,7 @@
     "node-ical": "^0.20.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "ws": "^8.21.3",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -41,6 +44,7 @@
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.4",
     "@types/react-dom": "^19.0.2",
+    "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.17.0",
