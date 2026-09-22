@@ -1,14 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { neonConfig } from "@neondatabase/serverless";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import ws from "ws";
+import { PrismaNeonHTTP } from "@prisma/adapter-neon";
 
 /**
  * Prisma-Client als Singleton.
- * - Produktion mit Neon (DATABASE_URL enthält "neon.tech"): Neon-Serverless-
- *   Treiber über einen Driver-Adapter. Die DB-Verbindung läuft über WebSocket
- *   statt über eine native TCP/TLS-Verbindung – das vermeidet die 502-Abstürze
- *   der nativen Query-Engine auf Netlify/AWS-Lambda.
+ * - Produktion mit Neon (DATABASE_URL enthält "neon.tech"): reiner HTTP-Adapter
+ *   (PrismaNeonHTTP). Jede Abfrage ist ein zustandsloser HTTPS-Request – das ist
+ *   auf Netlify/AWS-Lambda stabil (der WebSocket-Treiber hängt dort). Der Code
+ *   verwendet bewusst KEINE Transaktionen (HTTP-Treiber unterstützt keine).
  * - Lokale Entwicklung (localhost-Postgres): Standard-Prisma-Client.
  */
 const globalForPrisma = globalThis as unknown as {
@@ -18,15 +16,7 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient(): PrismaClient {
   const url = process.env.DATABASE_URL ?? "";
   if (/neon\.tech/i.test(url)) {
-    // ws erfüllt die WebSocket-Schnittstelle, die Typen weichen aber ab.
-    neonConfig.webSocketConstructor = ws as unknown as typeof WebSocket;
-    // WICHTIG: Auf Netlify-Lambda hängt der WebSocket zu Neon. Daher alle
-    // Abfragen über HTTP (fetch) schicken. Der Code verwendet bewusst keine
-    // interaktiven Transaktionen, sodass kein WebSocket benötigt wird.
-    neonConfig.poolQueryViaFetch = true;
-    // PrismaNeon erwartet eine PoolConfig ({ connectionString }), den Pool legt
-    // der Adapter selbst an.
-    const adapter = new PrismaNeon({ connectionString: url });
+    const adapter = new PrismaNeonHTTP(url, {});
     // adapter-Option gehört zum driverAdapters-Preview; per Cast typsicher halten.
     const options = { adapter, log: ["error"] } as unknown as ConstructorParameters<
       typeof PrismaClient
