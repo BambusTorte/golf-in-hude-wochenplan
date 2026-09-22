@@ -6,8 +6,9 @@ generator client {
   // driverAdapters: erlaubt den Neon-Serverless-Treiber in Produktion
   // (reines JS, keine native Query-Engine -> keine 502 auf Netlify/Lambda).
   previewFeatures = ["driverAdapters"]
-  // "native" für lokale Entwicklung (localhost-Postgres über native Engine).
-  binaryTargets   = ["native"]
+  // "native" für lokale Entwicklung; rhel-Ziele für alle Lambda-Laufzeiten
+  // (verhindert Engine-Mismatch auf einzelnen Instanzen -> 502-Alternierung).
+  binaryTargets   = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
