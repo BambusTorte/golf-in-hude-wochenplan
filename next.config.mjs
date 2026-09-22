@@ -17,6 +17,13 @@ const nextConfig = {
       "./node_modules/.prisma/client/**/*",
       "./node_modules/@prisma/client/**/*",
     ],
+    // pdfkit-Standardschriften (von @react-pdf genutzt) ins Bundle der
+    // PDF-Route aufnehmen – sonst "Cannot find module Helvetica.cjs" (500).
+    "/api/pdf/**": [
+      "./node_modules/pdfkit/js/standard-fonts/**/*",
+      "./node_modules/pdfkit/js/**/*",
+      "./public/logo.png",
+    ],
   },
   eslint: {
     // Linting runs as a separate CI step (`npm run lint`); do not fail the build on it.

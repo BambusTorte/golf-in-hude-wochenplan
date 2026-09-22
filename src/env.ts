@@ -45,7 +45,10 @@ export function getEnv(): ServerEnv {
 
 /** Öffentliche (clientseitig verfügbare) Konfiguration – niemals Secrets. */
 export const publicConfig = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  // "||" statt "??": auch ein leerer String fällt auf den Standard zurück
+  // (verhindert `new URL("")`-Fehler im Build, wenn die Variable leer ist).
+  siteUrl:
+    process.env.NEXT_PUBLIC_SITE_URL || "https://golf-in-hude-wochenplan.vercel.app",
   clubName: "Golf in Hude e. V.",
   claim: "Golf. In Hude!",
   website: "www.golfinhude.de",

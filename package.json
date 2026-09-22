@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Wochenplan-Plattform für den Golfclub Hude",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",

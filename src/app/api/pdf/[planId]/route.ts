@@ -23,8 +23,14 @@ export async function GET(
     if (!admin) return new NextResponse("Nicht gefunden", { status: 404 });
   }
 
-  const { renderPlanPdfBuffer } = await import("@/lib/pdf/render");
-  const buffer = await renderPlanPdfBuffer(planId);
+  let buffer: Buffer;
+  try {
+    const { renderPlanPdfBuffer } = await import("@/lib/pdf/render");
+    buffer = await renderPlanPdfBuffer(planId);
+  } catch (e) {
+    console.error("PDF-Render fehlgeschlagen:", e);
+    return new NextResponse("PDF konnte nicht erzeugt werden.", { status: 500 });
+  }
 
   const download = req.nextUrl.searchParams.get("download") === "1";
   const filename = `Wochenplan-KW${String(plan.isoWeek).padStart(2, "0")}-${plan.year}.pdf`;
