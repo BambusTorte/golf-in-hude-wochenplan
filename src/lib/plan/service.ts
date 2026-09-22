@@ -41,12 +41,10 @@ export async function setStatus(
 ): Promise<void> {
   const plan = await prisma.weeklyPlan.findUniqueOrThrow({ where: { id: planId } });
   assertTransition(plan.status, to);
-  await prisma.$transaction([
-    prisma.weeklyPlan.update({ where: { id: planId }, data: { status: to } }),
-    prisma.changeLog.create({
-      data: { planId, adminId, action: `status:${plan.status}->${to}` },
-    }),
-  ]);
+  await prisma.weeklyPlan.update({ where: { id: planId }, data: { status: to } });
+  await prisma.changeLog.create({
+    data: { planId, adminId, action: `status:${plan.status}->${to}` },
+  });
 }
 
 /**
@@ -66,16 +64,14 @@ export async function publishPlan(
   // PDF sicherstellen (immer frisch aus den aktuellen Daten rendern).
   await renderPdf(planId);
 
-  await prisma.$transaction([
-    prisma.weeklyPlan.update({
-      where: { id: planId },
-      data: { status: "PUBLISHED", publishedAt: new Date() },
-    }),
-    prisma.publishEvent.create({ data: { planId, adminId, type: "PUBLISH" } }),
-    prisma.changeLog.create({
-      data: { planId, adminId, action: `publish:${plan.status}->PUBLISHED` },
-    }),
-  ]);
+  await prisma.weeklyPlan.update({
+    where: { id: planId },
+    data: { status: "PUBLISHED", publishedAt: new Date() },
+  });
+  await prisma.publishEvent.create({ data: { planId, adminId, type: "PUBLISH" } });
+  await prisma.changeLog.create({
+    data: { planId, adminId, action: `publish:${plan.status}->PUBLISHED` },
+  });
 }
 
 /** Nimmt eine Veröffentlichung zurück (zurück nach REVIEW). */
@@ -87,16 +83,14 @@ export async function unpublishPlan(
   if (plan.status !== "PUBLISHED") {
     throw new Error("Nur veröffentlichte Pläne können zurückgenommen werden.");
   }
-  await prisma.$transaction([
-    prisma.weeklyPlan.update({
-      where: { id: planId },
-      data: { status: "REVIEW", publishedAt: null },
-    }),
-    prisma.publishEvent.create({ data: { planId, adminId, type: "UNPUBLISH" } }),
-    prisma.changeLog.create({
-      data: { planId, adminId, action: "unpublish:PUBLISHED->REVIEW" },
-    }),
-  ]);
+  await prisma.weeklyPlan.update({
+    where: { id: planId },
+    data: { status: "REVIEW", publishedAt: null },
+  });
+  await prisma.publishEvent.create({ data: { planId, adminId, type: "UNPUBLISH" } });
+  await prisma.changeLog.create({
+    data: { planId, adminId, action: "unpublish:PUBLISHED->REVIEW" },
+  });
 }
 
 export async function deletePlan(planId: string): Promise<void> {

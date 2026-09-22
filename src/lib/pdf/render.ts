@@ -55,11 +55,10 @@ export async function renderAndStorePdf(planId: string): Promise<RenderResult> {
 
   // Alte PDFs sammeln, ersetzen (eine aktuelle PDF pro Plan).
   const old = await prisma.pdfFile.findMany({ where: { planId } });
-  const created = await prisma.$transaction(async (tx) => {
-    await tx.pdfFile.deleteMany({ where: { planId } });
-    return tx.pdfFile.create({
-      data: { planId, storageKey, byteSize: buffer.length, contentHash },
-    });
+  // Sequenziell statt Transaktion (Neon-HTTP-Treiber ohne interaktive Tx).
+  await prisma.pdfFile.deleteMany({ where: { planId } });
+  const created = await prisma.pdfFile.create({
+    data: { planId, storageKey, byteSize: buffer.length, contentHash },
   });
 
   // Alte Blobs best-effort entfernen (nach erfolgreicher DB-Aktualisierung).

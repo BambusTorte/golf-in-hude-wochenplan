@@ -47,17 +47,15 @@ export async function completeSetup(input: {
   const email = input.email.trim().toLowerCase();
   const passwordHash = await hashPassword(input.password);
 
-  return prisma.$transaction(async (tx) => {
-    // Doppelte Absicherung innerhalb der Transaktion.
-    if ((await tx.admin.count()) > 0) {
-      throw new SetupError("Es existiert bereits ein Administrator.");
-    }
-    const admin = await tx.admin.create({ data: { email, passwordHash } });
-    await tx.setupState.upsert({
-      where: { id: 1 },
-      create: { id: 1, completed: true, completedAt: new Date() },
-      update: { completed: true, completedAt: new Date() },
-    });
-    return admin;
+  // Sequenziell statt Transaktion (Neon-HTTP-Treiber ohne interaktive Tx).
+  if ((await prisma.admin.count()) > 0) {
+    throw new SetupError("Es existiert bereits ein Administrator.");
+  }
+  const admin = await prisma.admin.create({ data: { email, passwordHash } });
+  await prisma.setupState.upsert({
+    where: { id: 1 },
+    create: { id: 1, completed: true, completedAt: new Date() },
+    update: { completed: true, completedAt: new Date() },
   });
+  return admin;
 }

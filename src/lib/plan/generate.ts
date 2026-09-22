@@ -74,9 +74,10 @@ export async function generateWeeklyPlan(
       return (a.startTime ?? "").localeCompare(b.startTime ?? "");
     });
 
-    // 3) Transaktion: Plan upserten, Events upserten
-    const result = await prisma.$transaction(async (tx) => {
-      const plan = await tx.weeklyPlan.upsert({
+    // 3) Plan upserten, Events upserten (sequenziell; der Neon-HTTP-Treiber
+    //    unterstützt keine interaktiven Transaktionen).
+    const result = await (async () => {
+      const plan = await prisma.weeklyPlan.upsert({
         where: { year_isoWeek: { year, isoWeek: week } },
         create: {
           year,
@@ -107,7 +108,7 @@ export async function generateWeeklyPlan(
         const externalId = e.externalId ?? eventKey(e);
         const weekday = weekdayIndex(e.date);
 
-        const existing = await tx.planEvent.findUnique({
+        const existing = await prisma.planEvent.findUnique({
           where: { planId_externalId: { planId: plan.id, externalId } },
         });
 
@@ -139,7 +140,7 @@ export async function generateWeeklyPlan(
           sortOrder: i,
         };
 
-        await tx.planEvent.upsert({
+        await prisma.planEvent.upsert({
           where: { planId_externalId: { planId: plan.id, externalId } },
           create: { planId: plan.id, externalId, ...data },
           update: data,
@@ -148,13 +149,13 @@ export async function generateWeeklyPlan(
       }
 
       // 4) Validierung über den aktuellen Planbestand
-      const planEvents = await tx.planEvent.findMany({
+      const planEvents = await prisma.planEvent.findMany({
         where: { planId: plan.id },
       });
       const validation = validatePlan(planEvents);
       const allWarnings = [...warnings, ...validation.warnings];
 
-      const updatedPlan = await tx.weeklyPlan.update({
+      const updatedPlan = await prisma.weeklyPlan.update({
         where: { id: plan.id },
         data: { warnings: allWarnings as Prisma.JsonArray },
       });
@@ -165,7 +166,7 @@ export async function generateWeeklyPlan(
         found: fetched.events.length,
         warnings: allWarnings,
       };
-    });
+    })();
 
     await prisma.importRun.update({
       where: { id: importRun.id },
