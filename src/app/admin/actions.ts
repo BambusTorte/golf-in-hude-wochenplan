@@ -345,7 +345,7 @@ export async function saveSeriesAction(
     holes: d.holes === "" || d.holes === undefined ? null : Number(d.holes),
     tee: d.tee?.trim() || null,
     participantsEstimate: d.participantsEstimate?.trim() || null,
-    playType: d.playType && d.playType !== "" ? d.playType : null,
+    playType: d.playType ? d.playType : null,
     active: d.active === "on",
   };
   try {
