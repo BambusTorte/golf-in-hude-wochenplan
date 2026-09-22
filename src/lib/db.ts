@@ -20,6 +20,10 @@ function createPrismaClient(): PrismaClient {
   if (/neon\.tech/i.test(url)) {
     // ws erfüllt die WebSocket-Schnittstelle, die Typen weichen aber ab.
     neonConfig.webSocketConstructor = ws as unknown as typeof WebSocket;
+    // WICHTIG: Auf Netlify-Lambda hängt der WebSocket zu Neon. Daher alle
+    // Abfragen über HTTP (fetch) schicken. Der Code verwendet bewusst keine
+    // interaktiven Transaktionen, sodass kein WebSocket benötigt wird.
+    neonConfig.poolQueryViaFetch = true;
     // PrismaNeon erwartet eine PoolConfig ({ connectionString }), den Pool legt
     // der Adapter selbst an.
     const adapter = new PrismaNeon({ connectionString: url });
