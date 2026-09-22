@@ -4,12 +4,6 @@ import { assertTransition } from "./status";
 import { validatePlan } from "./validate";
 import { getWeekRange, weekdayIndex, isValidWeek } from "@/lib/week/isoWeek";
 
-// Der schwergewichtige PDF-Renderer (@react-pdf) wird bewusst NUR dynamisch
-// geladen, damit ihn Seiten/Bundles, die nur lesen, nicht mitziehen.
-async function renderPdf(planId: string) {
-  const { renderAndStorePdf } = await import("@/lib/pdf/render");
-  return renderAndStorePdf(planId);
-}
 
 /** Aktuelle PDF-Datei eines Plans (jüngste). */
 export async function getCurrentPdf(planId: string) {
@@ -61,8 +55,8 @@ export async function publishPlan(
   }
   await refreshWarnings(planId);
 
-  // PDF sicherstellen (immer frisch aus den aktuellen Daten rendern).
-  await renderPdf(planId);
+  // Kein Vor-Rendern nötig: Die PDF wird bei jedem Abruf zustandslos frisch
+  // erzeugt (siehe /api/pdf). Das ist plattformunabhängig serverless-tauglich.
 
   await prisma.weeklyPlan.update({
     where: { id: planId },

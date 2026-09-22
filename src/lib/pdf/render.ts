@@ -31,8 +31,27 @@ export interface RenderResult {
 }
 
 /**
+ * Rendert die Wochenplan-PDF frisch als Buffer – ohne Speicherung. Dadurch ist
+ * die PDF-Auslieferung zustandslos und läuft auf jeder Serverless-Plattform.
+ */
+export async function renderPlanPdfBuffer(planId: string): Promise<Buffer> {
+  const plan = await prisma.weeklyPlan.findUniqueOrThrow({
+    where: { id: planId },
+    include: { events: true },
+  });
+  const data = buildPdfData(plan, plan.events);
+  const logo = await loadLogo();
+  const element = React.createElement(WochenplanDocument, {
+    data,
+    logo,
+  }) as Parameters<typeof renderToBuffer>[0];
+  return renderToBuffer(element);
+}
+
+/**
  * Rendert die Wochenplan-PDF reproduzierbar aus den DB-Daten, legt sie ab und
  * verweist den Plan darauf. Alte PDFs desselben Plans werden ersetzt.
+ * (Optional; die Auslieferung nutzt renderPlanPdfBuffer und braucht das nicht.)
  */
 export async function renderAndStorePdf(planId: string): Promise<RenderResult> {
   const plan = await prisma.weeklyPlan.findUniqueOrThrow({
