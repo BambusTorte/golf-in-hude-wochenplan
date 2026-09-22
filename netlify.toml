@@ -8,7 +8,8 @@
 
 [build.environment]
   # Prisma-Client wird im Build generiert (siehe package.json build-Skript).
-  NODE_VERSION = "22"
+  # Node 20 (LTS) – gut unterstützt von der Netlify-Next-Runtime.
+  NODE_VERSION = "20"
 
 # Offizielles Next.js-Runtime-Plugin (Route Handlers, Server Actions, SSR).
 [[plugins]]
