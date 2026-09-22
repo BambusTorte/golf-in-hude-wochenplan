@@ -19,6 +19,11 @@ import {
   unpublishPlan,
   setStatus,
   deletePlan,
+  createSeries,
+  updateSeries,
+  deleteSeries,
+  setSeriesActive,
+  applySeriesToPlan,
 } from "@/lib/plan/service";
 import { berlinDayInstant } from "@/lib/week/isoWeek";
 
@@ -298,6 +303,82 @@ export async function deleteEventAction(formData: FormData): Promise<void> {
   const eventId = String(formData.get("eventId"));
   const planId = String(formData.get("planId"));
   await deleteEvent(eventId, admin.id);
+  revalidatePath(`/admin/plans/${planId}`);
+  redirect(`/admin/plans/${planId}`);
+}
+
+// --- Turnierserien -----------------------------------------------------------
+
+const seriesSchema = z.object({
+  seriesId: z.string().optional(),
+  title: z.string().min(1, "Bitte einen Titel angeben."),
+  weekday: z.coerce.number().int().min(0).max(6),
+  startTime: z
+    .string()
+    .regex(/^\d{2}:\d{2}$/, "Ungültige Uhrzeit.")
+    .optional()
+    .or(z.literal("")),
+  course: z.string().optional(),
+  holes: z.coerce.number().int().min(0).max(72).optional().or(z.literal("")),
+  tee: z.string().optional(),
+  participantsEstimate: z.string().optional(),
+  playType: z
+    .enum(["CLUB_VW", "CLUB_NVW", "VERBAND", "SPONSOR"])
+    .optional()
+    .or(z.literal("")),
+  active: z.union([z.literal("on"), z.literal("")]).optional(),
+});
+
+export async function saveSeriesAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  await ensureAdmin();
+  const parsed = seriesSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  const d = parsed.data;
+  const input = {
+    title: d.title.trim(),
+    weekday: d.weekday,
+    startTime: d.startTime || null,
+    course: d.course?.trim() || null,
+    holes: d.holes === "" || d.holes === undefined ? null : Number(d.holes),
+    tee: d.tee?.trim() || null,
+    participantsEstimate: d.participantsEstimate?.trim() || null,
+    playType: d.playType && d.playType !== "" ? d.playType : null,
+    active: d.active === "on",
+  };
+  try {
+    if (d.seriesId) await updateSeries(d.seriesId, input);
+    else await createSeries(input);
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Speichern fehlgeschlagen." };
+  }
+  revalidatePath("/admin/series");
+  redirect("/admin/series");
+}
+
+export async function deleteSeriesAction(formData: FormData): Promise<void> {
+  await ensureAdmin();
+  await deleteSeries(String(formData.get("seriesId")));
+  revalidatePath("/admin/series");
+  redirect("/admin/series");
+}
+
+export async function toggleSeriesAction(formData: FormData): Promise<void> {
+  await ensureAdmin();
+  await setSeriesActive(
+    String(formData.get("seriesId")),
+    String(formData.get("active")) === "1",
+  );
+  revalidatePath("/admin/series");
+  redirect("/admin/series");
+}
+
+export async function applySeriesAction(formData: FormData): Promise<void> {
+  await ensureAdmin();
+  const planId = String(formData.get("planId"));
+  await applySeriesToPlan(planId);
   revalidatePath(`/admin/plans/${planId}`);
   redirect(`/admin/plans/${planId}`);
 }

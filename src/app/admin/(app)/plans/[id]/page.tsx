@@ -20,6 +20,7 @@ import {
   deletePlanAction,
   regenerateAction,
   renderPdfAction,
+  applySeriesAction,
 } from "@/app/admin/actions";
 
 export const dynamic = "force-dynamic";
@@ -77,6 +78,7 @@ export default async function PlanDetailPage({
     format: e.format ?? "",
     origin: e.origin,
     source: e.source,
+    fromSeries: e.seriesId != null,
   }));
 
   const pid = { planId: plan.id };
@@ -112,6 +114,7 @@ export default async function PlanDetailPage({
       <Card>
         <CardBody className="flex flex-wrap items-center gap-2">
           <InlineForm action={regenerateAction} fields={pid} label="Neu generieren" />
+          <InlineForm action={applySeriesAction} fields={pid} label="Serien anwenden" />
           <InlineForm action={renderPdfAction} fields={pid} label="PDF neu erzeugen" />
 
           {plan.status === "DRAFT" ? (

@@ -12,6 +12,7 @@ import {
   suggestParticipants,
 } from "@/lib/week/mapping";
 import { dedupeEvents, eventKey } from "@/lib/plan/dedupe";
+import { applySeriesToWeek } from "@/lib/plan/series";
 import { validatePlan } from "@/lib/plan/validate";
 import { PLAN_SUBTITLE_DEFAULT } from "@/lib/plan/labels";
 import { fetchWeekWithFallback } from "@/lib/providers/registry";
@@ -147,6 +148,9 @@ export async function generateWeeklyPlan(
         });
         imported++;
       }
+
+      // 3b) Turnierserien anwenden (wiederkehrende Termine automatisch eintragen)
+      await applySeriesToWeek(plan.id, year, week);
 
       // 4) Validierung über den aktuellen Planbestand
       const planEvents = await prisma.planEvent.findMany({

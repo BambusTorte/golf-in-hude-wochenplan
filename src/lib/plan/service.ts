@@ -243,3 +243,71 @@ export async function getCurrentPublishedPlan() {
 export function weekRangeFor(year: number, week: number) {
   return getWeekRange(year, week);
 }
+
+// --- Turnierserien -----------------------------------------------------------
+
+export interface SeriesInput {
+  title: string;
+  weekday: number;
+  startTime?: string | null;
+  course?: string | null;
+  holes?: number | null;
+  tee?: string | null;
+  playType?: PlayType | null;
+  participantsEstimate?: string | null;
+  active?: boolean;
+}
+
+function normalizeSeries(input: SeriesInput) {
+  return {
+    title: input.title.trim(),
+    weekday: input.weekday,
+    startTime: input.startTime || null,
+    course: input.course || null,
+    holes: input.holes ?? null,
+    tee: input.tee || null,
+    playType: input.playType ?? null,
+    participantsEstimate: input.participantsEstimate || null,
+    active: input.active ?? true,
+  };
+}
+
+export async function listSeries() {
+  return prisma.series.findMany({
+    orderBy: [{ active: "desc" }, { weekday: "asc" }, { startTime: "asc" }],
+    include: { _count: { select: { events: true } } },
+  });
+}
+
+export async function getSeries(id: string) {
+  return prisma.series.findUnique({ where: { id } });
+}
+
+export async function createSeries(input: SeriesInput) {
+  return prisma.series.create({ data: normalizeSeries(input) });
+}
+
+export async function updateSeries(id: string, input: SeriesInput) {
+  return prisma.series.update({ where: { id }, data: normalizeSeries(input) });
+}
+
+export async function setSeriesActive(id: string, active: boolean) {
+  return prisma.series.update({ where: { id }, data: { active } });
+}
+
+/**
+ * Löscht eine Serie. Bereits erzeugte Termine bleiben in den Wochenplänen
+ * erhalten (seriesId wird durch onDelete: SetNull entkoppelt).
+ */
+export async function deleteSeries(id: string) {
+  return prisma.series.delete({ where: { id } });
+}
+
+/** Wendet die aktiven Serien auf einen bestehenden (nicht archivierten) Plan an. */
+export async function applySeriesToPlan(planId: string): Promise<number> {
+  const plan = await prisma.weeklyPlan.findUniqueOrThrow({ where: { id: planId } });
+  const { applySeriesToWeek } = await import("./series");
+  const n = await applySeriesToWeek(plan.id, plan.year, plan.isoWeek);
+  await refreshWarnings(planId);
+  return n;
+}

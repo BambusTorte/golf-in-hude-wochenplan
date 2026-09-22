@@ -18,7 +18,7 @@ export default async function PublicPlanDetail({
   return (
     <div className="py-8">
       <div className="mb-6 no-print">
-        <Link href="/plan" className="text-sm font-semibold text-accent-400 hover:text-accent-300">
+        <Link href="/" className="text-sm font-semibold text-accent-400 hover:text-accent-300">
           ← Alle Wochenpläne
         </Link>
       </div>

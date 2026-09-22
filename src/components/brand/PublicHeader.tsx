@@ -22,13 +22,7 @@ export function PublicHeader() {
             href="/"
             className="rounded-full px-3 py-2 transition hover:bg-white/10"
           >
-            Aktuelle Woche
-          </Link>
-          <Link
-            href="/plan"
-            className="rounded-full px-3 py-2 transition hover:bg-white/10"
-          >
-            Alle Wochen
+            Wochenpläne
           </Link>
         </nav>
       </div>

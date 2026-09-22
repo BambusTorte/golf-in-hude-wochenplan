@@ -1,57 +1,61 @@
 import Link from "next/link";
-import { getCurrentPublishedPlan } from "@/lib/plan/service";
-import { WochenplanTable } from "@/components/plan/WochenplanTable";
-import { PlanPdfActions } from "@/components/plan/PlanPdfActions";
+import { listPublishedPlans } from "@/lib/plan/service";
+import { formatWeekRange, getWeekRange } from "@/lib/week/isoWeek";
 import { Card, CardBody } from "@/components/ui/Card";
-import { ButtonLink } from "@/components/ui/Button";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const plan = await getCurrentPublishedPlan();
-
-  if (!plan) {
-    return (
-      <div className="py-16">
-        <Card className="mx-auto max-w-xl text-center">
-          <CardBody>
-            <p className="label-eyebrow">Wochenplan</p>
-            <h1 className="mt-2 text-2xl font-extrabold text-ink">
-              Zurzeit ist kein Wochenplan veröffentlicht
-            </h1>
-            <p className="mt-3 text-ink-muted">
-              Sobald der aktuelle Wochenplan freigegeben wurde, erscheint er hier –
-              mit allen Turnieren und Veranstaltungen der Woche sowie als PDF zum
-              Download.
-            </p>
-          </CardBody>
-        </Card>
-      </div>
-    );
-  }
+  const plans = await listPublishedPlans();
 
   return (
     <div className="py-8">
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="label-eyebrow !text-accent-400">
-            Kalenderwoche {plan.isoWeek} · {plan.year}
-          </p>
-          <h1 className="mt-1 text-3xl font-extrabold text-white">{plan.title}</h1>
-          {plan.subtitle ? (
-            <p className="mt-1 text-white/70">{plan.subtitle}</p>
-          ) : null}
-        </div>
-        <PlanPdfActions planId={plan.id} />
-      </div>
+      <p className="label-eyebrow !text-accent-400">Übersicht</p>
+      <h1 className="mt-1 text-3xl font-extrabold text-white">
+        Veröffentlichte Wochenpläne
+      </h1>
+      <p className="mt-1 text-white/70">
+        Wähle eine Kalenderwoche, um den Wochenplan anzusehen oder als PDF zu öffnen.
+      </p>
 
-      <WochenplanTable events={plan.events} />
-
-      <div className="mt-6 no-print">
-        <ButtonLink href="/plan" variant="secondary" size="sm">
-          Alle veröffentlichten Wochen ansehen
-        </ButtonLink>
-      </div>
+      {plans.length === 0 ? (
+        <Card className="mt-6 max-w-xl">
+          <CardBody>
+            <p className="text-ink-muted">
+              Es wurde noch kein Wochenplan veröffentlicht. Schau bald wieder vorbei.
+            </p>
+          </CardBody>
+        </Card>
+      ) : (
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {plans.map((plan) => (
+            <li key={plan.id}>
+              <Link
+                href={`/plan/${plan.year}/${plan.isoWeek}`}
+                className="block focus-ring rounded-card"
+              >
+                <Card className="transition hover:shadow-card-lg">
+                  <CardBody className="flex items-center gap-4">
+                    <span className="badge-tile min-w-[3.5rem] flex-col !py-2 text-center leading-tight">
+                      <span className="text-[0.6rem] font-semibold opacity-80">KW</span>
+                      <span className="text-lg">{plan.isoWeek}</span>
+                    </span>
+                    <span>
+                      <span className="block font-bold text-ink">
+                        {formatWeekRange(getWeekRange(plan.year, plan.isoWeek))}
+                      </span>
+                      <span className="block text-sm text-ink-muted">
+                        {plan.year}
+                        {plan.subtitle ? ` · ${plan.subtitle}` : ""}
+                      </span>
+                    </span>
+                  </CardBody>
+                </Card>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

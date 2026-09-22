@@ -26,6 +26,7 @@ export interface EditableEvent {
   format: string;
   origin: string;
   source: string;
+  fromSeries?: boolean;
 }
 
 function EventForm({
@@ -198,6 +199,11 @@ export function EventsManager({
                   {e.course || "–"}
                   {e.playType ? ` · ${PLAY_TYPE_SHORT[e.playType as keyof typeof PLAY_TYPE_SHORT]}` : ""}
                 </span>
+                {e.fromSeries ? (
+                  <span className="rounded-full bg-accent-300/40 px-2 py-0.5 text-xs font-medium text-brand-800">
+                    Serie
+                  </span>
+                ) : null}
                 <span
                   className={cn(
                     "rounded-full px-2 py-0.5 text-xs font-medium",

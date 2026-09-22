@@ -143,12 +143,40 @@ model PlanEvent {
   origin EventOrigin @default(IMPORTED)
   rawRef Json        @default("{}") // Rohdatenreferenz für Nachvollziehbarkeit
 
+  // Herkunft aus einer Turnierserie (Vorlage), falls zutreffend.
+  seriesId String?
+  series   Series? @relation(fields: [seriesId], references: [id], onDelete: SetNull)
+
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([planId, externalId])
   @@index([planId, date])
+  @@index([seriesId])
+}
+
+// Turnierserie / Gruppenserie: wiederkehrende Vorlage (z. B. "Montags Mogos").
+// Wird bei der Wochenplan-Erstellung automatisch als Termin eingetragen.
+model Series {
+  id                   String    @id @default(cuid())
+  title                String
+  weekday              Int // 0 = Montag … 6 = Sonntag
+  startTime            String? // "HH:mm"
+  course               String?
+  holes                Int?
+  tee                  String?
+  format               String?
+  playType             PlayType?
+  participantsEstimate String? // "TN"-Schätzung ("ca. 15")
+  active               Boolean   @default(true)
+  sortOrder            Int       @default(0)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  events PlanEvent[]
+
+  @@index([active, weekday])
 }
 
 // --- Import & Protokolle -----------------------------------------------------
