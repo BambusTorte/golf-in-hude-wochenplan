@@ -1,14 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // @neondatabase/serverless, ws und der Adapter werden bewusst NICHT external
+  // gehalten, damit sie sicher ins Serverless-Bundle gelangen (sonst 502 durch
+  // fehlende Auflösung zur Laufzeit).
   serverExternalPackages: [
     "@react-pdf/renderer",
     "@node-rs/argon2",
     "node-ical",
     "@prisma/client",
-    "@prisma/adapter-neon",
-    "@neondatabase/serverless",
-    "ws",
   ],
   // Prisma-Query-Engine (Binärdatei) zwingend ins Serverless-Function-Bundle
   // aufnehmen – sonst 502 zur Laufzeit auf Netlify/Lambda.
